@@ -1,0 +1,3 @@
+[Countries](name*, tax_code);
+[Users](name*, email*, card#, address(street, number, zip), utype);
+[Projects](name*, type, reward_level);
