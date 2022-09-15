@@ -1,3 +1,27 @@
 [Countries](name*, tax_code);
-[Users](name*, email*, card#, address(street, number, zip), utype);
-[Projects](name*, type, reward_level);
+[Users](cards#, name, email*);
+[Creators](country,);
+[Backers](address(street, number, zip), country,);
+[Projects](id*, name, type, deadline(time, date));
+[Employees](id*, name, salary);
+
+<Citizen>();
+<Create>(date);
+<Funding>( reward_level*, min_funding*);
+<Update>(timestamp(time, date)); 
+<Refund_req>(timestamp(time, date), status);
+<Verification>(timestamp(time, date));
+
+Users === {Creators, Backers};
+Users === Citizen;
+Countries --- Citizen;
+Creators --- Create;
+Projects ==> Create;
+Backers --- Funding;
+Projects --- Funding;
+Creators --- Update;
+Projects --- Update;
+Employees --- Refund_req;
+Backers --- Refund_req;
+Employees === Verification;
+Users --- Verification;
