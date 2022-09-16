@@ -1,19 +1,19 @@
 [Countries](name*, tax_code);
 [Users](cards#, name, email*);
-[Creators](country,);
+[Creators]();
 [Backers](address(street, number, zip), country,);
 [Projects](id*, name, type, deadline(time, date));
 [Employees](id*, name, salary);
 
 <Citizen>();
 <Create>(date);
-<Funding>( reward_level*, min_funding*);
+<Funding>( reward_level, min_funding);
 <Update>(timestamp(time, date)); 
 <Refund_req>(timestamp(time, date), status);
 <Verification>(timestamp(time, date));
 
 Users === {Creators, Backers};
-Users === Citizen;
+Creators === Citizen;
 Countries --- Citizen;
 Creators --- Create;
 Projects ==> Create;

@@ -3,14 +3,18 @@ CREATE	TABLE 	Countries(
 	tax_code	INTEGER NOT NULl,
 );
 
-CREATE	TABLE	Creators(
+CREATE TABLE Users(
 	uname 	VARCHAR(50) NOT NULL,
-	email 	VARCHAR(50) UNIQUE NOT NULL,
+	email 	VARCHAR(50) PRIMARY KEY,
 	card_1	VARCHAR(20) NOT NULL,
 	card_2 	VARCHAR(20),
-	country VARCHAR(20) REFERENCES Countries(cname),
-	PRIMARY KEY (uname, email),
-	
+);
+
+CREATE	TABLE	Creators(
+	email 	VARCHAR(50) UNIQUE NOT NULL,
+	country VARCHAR(20),
+	FOREIGN KEY (email) REFERENCES Users(email) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (country) REFERENCES Countries(cname) ON UPDATE CASCADE ON DELETE SET NULL,	
 );
 
 CREATE 	TABLE	Projects(
@@ -19,30 +23,24 @@ CREATE 	TABLE	Projects(
 	ptype 			VARCHAR(40),
 	reward_level 	VARCHAR(20) NOT NULL,
 	funding_goal	BIGINT,
-	deadline 		DATE,
-	creator VARCHAR(50) NOT NULL,
+	deadline_date 	DATE,
+	deadline_time 	TIME,
+	cemail VARCHAR(50) NOT NULL,
 	backers VARCHAR()
 	
 	PRIMARY KEY (pid, reward_level),
-	FOREIGN KEY creator REFERENCES Creators(uname, email) ON DELETE CASCADE ON UPDATE CASCADE, 
+	FOREIGN KEY cemail REFERENCES Creators(email) ON DELETE SET NULL ON UPDATE CASCADE, 
 	
 );
 
 CREATE	TABLE	Backers(
-	uname 	VARCHAR(50) NOT NULL,
-	email 	VARCHAR(50) UNIQUE NOT NULL,
-	card_1	VARCHAR(20) NOT NULL,
-	card_2 	VARCHAR(20),
+	email 	VARCHAR(50) PRIMARY KEY,
 	street_name		VARCHAR(50) NOT NULL,
 	house_number	VARCHAR(30) NOT NULL,
 	zip_code		INTEGER NOT NULL,
 	country 		VARCHAR(20) REFERENCES Countries(cname),
--- 	projects		SERIAL UNIQUE,
 	
--- 	UNIQUE(projects, back_level),
-	PRIMARY KEY (uname, email),
--- 	FOREIGN KEY (projects, back_level) REFERENCES Projects(pid, reward_level),
-	
+	FOREIGN KEY (email) REFERENCES Users(email),	
 );
 
 CREATE TABLE Employees(
@@ -52,14 +50,14 @@ CREATE TABLE Employees(
 
 CREATE TABLE Funding(
 	pname 	VARCHAR(100),
-	bname 	VARCHAR(50),
 	reward_level 	VARCHAR(20) NOT NULL,
-	email 	VARCHAR(50) NOT NULL,
+	min_funding 	BIGINT,
+	bemail 	VARCHAR(50) NOT NULL,
+	fund 	INTEGER NOT NULL,
 	
-	PRIMARY KEY (pname, bname),
--- 	UNIQUE (pname, bname, reward_level),
-	FOREIGN KEY (pname, reward_level) REFERENCES Projects(pname, reward_level) ON UPDATE CASCADE,
-	FOREIGN KEY (bname, email) REFERENCES Backers(uname, email),
+	PRIMARY KEY (pname, bemail),
+	FOREIGN KEY (pname, reward_level, min_funding) REFERENCES Projects(pname, reward_level, funding_goal) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY (bemail) REFERENCES Backers(email) ON UPDATE CASCADE ON DELETE SET NULL,
 )
 
 CREATE TABLE Refund(
