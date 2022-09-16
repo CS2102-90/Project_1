@@ -13,7 +13,7 @@
 <Update>(timestamp(time, date)); 
 <Verify>(timestamp(time, date));
 <<Request>>();
-<Check>(date, status);
+<Check_Refund>(date, refund_status);
 
 Users === {Creators, Backers};
 Creators === From;
@@ -30,5 +30,5 @@ Employees --> Verify;
 Users --- Verify;
 Refund ==> Request;
 Funding --> Request;
-Employees --- Check;
-Refund --- Check;
+Employees --- Check_Refund;
+Refund --- Check_Refund;
