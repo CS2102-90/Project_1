@@ -13,7 +13,7 @@ CREATE TABLE Users(
 	email 		VARCHAR(50) PRIMARY KEY,
 	uname 		VARCHAR(50) NOT NULL,
 	card_1		VARCHAR(20) NOT NULL,
-	card_2 		VARCHAR(20),
+	card_2 		VARCHAR(20)
 );
 
 CREATE	TABLE	Creators(
@@ -42,19 +42,17 @@ CREATE 	TABLE	Projects(
 	funding_goal	INTEGER,
 	deadline_date 	DATE,
 	cemail 			VARCHAR(50) NOT NULL,
-	bemail 	 		VARCHAR(),
 	create_date  	DATE,
 	
 	UNIQUE(pid, reward_level),
-	UNIQUE(pid, deadline_date),
 	PRIMARY KEY (pid, reward_level, min_funding, deadline_date),
-	FOREIGN KEY cemail REFERENCES Creators(email) ON DELETE SET NULL ON UPDATE CASCADE, 
+	FOREIGN KEY (cemail) REFERENCES Creators(email) ON DELETE SET NULL ON UPDATE CASCADE 
 );
 
 CREATE TABLE Funding(
 	pid 			INTEGER,
 	reward_level 	VARCHAR(20) NOT NULL,
-	min_funding 	INTEGER
+	min_funding 	INTEGER,
 	amount 			INTEGER,
 	bemail 			VARCHAR(50) NOT NULL,
 	fund 			INTEGER NOT NULL,
@@ -65,7 +63,7 @@ CREATE TABLE Funding(
 	FOREIGN KEY (pid, reward_level, min_funding, ddl) REFERENCES Projects(pid, reward_level, min_funding, deadline_date) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (bemail) REFERENCES Backers(email) ON DELETE SET NULL ON UPDATE CASCADE,
 	CHECK (amount >= min_funding),
-	CHECK (fund_date <= DATEADD(day, 0, ddl))
+	CHECK (fund_date between date '1900-01-01' and ddl)
 );
 
 CREATE TABLE Update_project(
@@ -77,7 +75,7 @@ CREATE TABLE Update_project(
 	update_date		DATE,
 	
 	PRIMARY KEY (pid, update_time, update_date),
-	FOREIGN KEY (pid, reward_level, min_funding, deadline_date, cemail) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE
+	FOREIGN KEY (pid, reward_level, min_funding, deadline_date) REFERENCES Projects(pid, reward_level, min_funding, deadline_date) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Refund(
@@ -88,7 +86,7 @@ CREATE TABLE Refund(
 
 	PRIMARY KEY (pid, bemail, refund_date),
 	FOREIGN KEY (pid, bemail, ddl) REFERENCES Funding(pid, bemail, ddl) ON DELETE CASCADE ON UPDATE CASCADE,
-	CHECK (refund_date <= DATEADD(day, -90, ddl))
+	CHECK (refund_date between date '1900-01-01' and date(ddl - 90))
 );
 
 CREATE TABLE Check_Refund(
