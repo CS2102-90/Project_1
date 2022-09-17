@@ -41,7 +41,6 @@ CREATE 	TABLE	Projects(
 	min_funding 	INTEGER,
 	funding_goal	INTEGER,
 	deadline_date 	DATE,
-	deadline_time 	TIME,
 	cemail 			VARCHAR(50) NOT NULL,
 	bemail 	 		VARCHAR(),
 	create_date  	DATE,
@@ -64,7 +63,7 @@ CREATE TABLE Funding(
 	fund_date 		DATE,
 	
 	PRIMARY KEY (pid, bemail, ddl),
-	FOREIGN KEY (pid, reward_level, min_funding, ddl) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (pid, reward_level, min_funding, ddl, cemail) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (bemail) REFERENCES Backers(email) ON DELETE SET NULL ON UPDATE CASCADE,
 	CHECK (amount >= min_funding),
 	CHECK (fund_date <= DATEADD(day, 0, ddl))
