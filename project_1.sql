@@ -47,7 +47,7 @@ CREATE 	TABLE	Projects(
 	
 	UNIQUE(pid, reward_level),
 	UNIQUE(pid, deadline_date),
-	PRIMARY KEY (pid, reward_level, min_funding, deadline_date, cemail),
+	PRIMARY KEY (pid, reward_level, min_funding, deadline_date),
 	FOREIGN KEY cemail REFERENCES Creators(email) ON DELETE SET NULL ON UPDATE CASCADE, 
 );
 
@@ -56,14 +56,13 @@ CREATE TABLE Funding(
 	reward_level 	VARCHAR(20) NOT NULL,
 	min_funding 	INTEGER
 	amount 			INTEGER,
-	cemail			VARCHAR(50) NOT NULL,
 	bemail 			VARCHAR(50) NOT NULL,
 	fund 			INTEGER NOT NULL,
 	ddl 			DATE,
 	fund_date 		DATE,
 	
 	PRIMARY KEY (pid, bemail, ddl),
-	FOREIGN KEY (pid, reward_level, min_funding, ddl, cemail) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (pid, reward_level, min_funding, ddl) REFERENCES Projects(pid, reward_level, min_funding, deadline_date) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (bemail) REFERENCES Backers(email) ON DELETE SET NULL ON UPDATE CASCADE,
 	CHECK (amount >= min_funding),
 	CHECK (fund_date <= DATEADD(day, 0, ddl))
@@ -71,14 +70,13 @@ CREATE TABLE Funding(
 
 CREATE TABLE Update_project(
 	pid 			INTEGER,
-	cemail			VARCHAR(50) NOT NULL,
 	reward_level	VARCHAR(20) NOT NULL,
 	min_funding 	INTEGER,
 	deadline_date 	DATE,
 	update_time		TIME,
 	update_date		DATE,
 	
-	PRIMARY KEY (pid, cemail, update_time, update_date),
+	PRIMARY KEY (pid, update_time, update_date),
 	FOREIGN KEY (pid, reward_level, min_funding, deadline_date, cemail) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -98,8 +96,10 @@ CREATE TABLE Check_Refund(
 	pid 			INTEGER NOT NULL,
 	bemail 			VARCHAR(50) NOT NULL,
 	refund_date 	DATE NOT NULL,
-	refund_status 	VARCHAR(50) 
+	refund_status 	VARCHAR(50),
 	
+	 
+	UNIQUE(pid, bemail),
 	CHECK (
 		(refund_status = 'APPROVED') OR 
 		(refund_status = 'REJECT')
