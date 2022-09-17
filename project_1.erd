@@ -2,7 +2,7 @@
 [Users](cards#, name, email*);
 [Creators]();
 [Backers](address(street, number, zip));
-[Projects](id*, name, type, deadline(time, date), reward_level, min_funding, funding_goal);
+[Projects](id*, name, type, deadline_date*, reward_level*, min_funding*, funding_goal, cemail*);
 [Employees](id*, name, salary);
 [[Refund]](refund_date);
 
@@ -10,7 +10,7 @@
 <From>();
 <Create>(date);
 [<Funding>](amount, fund_date);
-<Update_project>(timestamp(update_time, update_date)); 
+<Update_project>(update_time*, update_date*); 
 <Verify>(verify_date);
 <<Request>>();
 <Check_Refund>(date, refund_status);
@@ -22,8 +22,8 @@ Backers ==> Live_in;
 Countries --- Live_in;
 Creators --- Create;
 Projects ==> Create;
-Backers --> Funding;
-Projects --- Funding;
+Backers --- Funding;
+Projects --> Funding;
 Creators --- Update_project;
 Projects --- Update_project;
 Employees --> Verify;

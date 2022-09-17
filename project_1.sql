@@ -78,7 +78,7 @@ CREATE TABLE Update_project(
 	update_time		TIME,
 	update_date		DATE,
 	
-	PRIMARY KEY (pid, reward_level, min_funding, deadline_date, cemail, update_time, update_date),
+	PRIMARY KEY (pid, cemail, update_time, update_date),
 	FOREIGN KEY (pid, reward_level, min_funding, deadline_date, cemail) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
