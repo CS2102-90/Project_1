@@ -62,7 +62,7 @@ CREATE TABLE Funding(
 	ddl 			DATE,
 	fund_date 		DATE,
 	
-	UNIQUE(pid, bemail),
+	UNIQUE(bemail),
 	PRIMARY KEY (pid, bemail, ddl),
 	FOREIGN KEY (pid, reward_level, min_funding, ddl, cemail) REFERENCES Projects(pid, reward_level, min_funding, deadline_date, cemail) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (bemail) REFERENCES Backers(email) ON DELETE SET NULL ON UPDATE CASCADE,
